@@ -1,3 +1,11 @@
+.venv/
+**/__pycache__/
+*.pyc
+exo2/db.sqlite3
 __pycache__/
 *.pyc
 .env
+
+# Ignore all Markdown except exo2/README.md
+**/*.md
+!exo2/README.md
