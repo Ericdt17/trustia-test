@@ -1,0 +1,12 @@
+{% extends "billing/base.html" %}
+{% block title %}Supprimer le produit{% endblock %}
+{% block content %}
+<h1>Supprimer le produit</h1>
+<p>Confirmer la suppression de « {{ object.name }} » ?</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Oui, supprimer</button>
+  <a href="{% url 'billing:product_list' %}">Annuler</a>
+</form>
+{% endblock %}

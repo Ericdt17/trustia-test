@@ -1,0 +1,14 @@
+{% extends "billing/base.html" %}
+{% block title %}{% if object %}Modifier{% else %}Nouveau{% endif %} produit{% endblock %}
+{% block content %}
+<h1>{% if object %}Modifier le produit{% else %}Nouveau produit{% endif %}</h1>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <p>
+    <button type="submit">Enregistrer</button>
+    <a href="{% url 'billing:product_list' %}">Annuler</a>
+  </p>
+</form>
+{% endblock %}
