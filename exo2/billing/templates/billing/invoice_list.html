@@ -1,0 +1,40 @@
+{% extends "billing/base.html" %}
+{% block title %}Factures{% endblock %}
+{% block content %}
+<h1>Factures</h1>
+
+{% if invoices %}
+<table>
+  <thead>
+    <tr>
+      <th>N°</th>
+      <th>Date de création</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for invoice in invoices %}
+    <tr>
+      <td>{{ invoice.pk }}</td>
+      <td>{{ invoice.created_at }}</td>
+      <td><a href="{% url 'billing:invoice_detail' invoice.pk %}">Détail</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Aucune facture pour le moment.</p>
+{% endif %}
+
+{% if page_obj.has_other_pages %}
+<div class="pagination">
+  {% if page_obj.has_previous %}
+  <a href="?page={{ page_obj.previous_page_number }}">Précédent</a>
+  {% endif %}
+  <span>Page {{ page_obj.number }} / {{ paginator.num_pages }}</span>
+  {% if page_obj.has_next %}
+  <a href="?page={{ page_obj.next_page_number }}">Suivant</a>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock %}

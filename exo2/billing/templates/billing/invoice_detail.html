@@ -1,0 +1,33 @@
+{% extends "billing/base.html" %}
+{% block title %}Facture #{{ invoice.pk }}{% endblock %}
+{% block content %}
+<h1>Facture #{{ invoice.pk }}</h1>
+<p>Créée le {{ invoice.created_at }}.</p>
+
+<h2>Lignes</h2>
+{% if items %}
+<table>
+  <thead>
+    <tr>
+      <th>Produit</th>
+      <th>Prix unitaire</th>
+      <th>Quantité</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+      <td>{{ item.product.name }}</td>
+      <td>{{ item.product.price }} €</td>
+      <td>{{ item.quantity }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p><em>Les totaux (quantité globale, montant à payer) seront ajoutés dans une étape suivante.</em></p>
+{% else %}
+<p>Aucune ligne sur cette facture.</p>
+{% endif %}
+
+<p><a href="{% url 'billing:invoice_list' %}">Retour aux factures</a></p>
+{% endblock %}

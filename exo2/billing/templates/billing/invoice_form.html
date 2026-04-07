@@ -1,0 +1,47 @@
+{% extends "billing/base.html" %}
+{% block title %}Nouvelle facture{% endblock %}
+{% block content %}
+<h1>Nouvelle facture</h1>
+<p>Ajoutez une ou plusieurs lignes (produit + quantité).</p>
+
+<form method="post">
+  {% csrf_token %}
+  {{ formset.management_form }}
+  {% if formset.non_form_errors %}
+  <ul class="messages">
+    {% for err in formset.non_form_errors %}
+    <li style="background:#ffebee;border-color:#ffcdd2;">{{ err }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <table>
+    <thead>
+      <tr>
+        <th>Produit</th>
+        <th>Quantité</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for form in formset %}
+      <tr>
+        <td>
+          {% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+          {{ form.product.errors }}
+          {{ form.product }}
+        </td>
+        <td>
+          {{ form.quantity.errors }}
+          {{ form.quantity }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <p>
+    <button type="submit">Créer la facture</button>
+    <a href="{% url 'billing:invoice_list' %}">Annuler</a>
+  </p>
+</form>
+{% endblock %}

@@ -24,6 +24,8 @@
   <nav>
     <a href="{% url 'billing:product_list' %}">Liste des produits</a>
     <a href="{% url 'billing:product_create' %}">Nouveau produit</a>
+    <a href="{% url 'billing:invoice_list' %}">Factures</a>
+    <a href="{% url 'billing:invoice_create' %}">Nouvelle facture</a>
   </nav>
 
   {% if messages %}
