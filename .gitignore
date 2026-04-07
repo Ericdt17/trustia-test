@@ -2,6 +2,7 @@
 **/__pycache__/
 *.pyc
 exo2/db.sqlite3
+exo2/db.sqlite3.bak_*
 __pycache__/
 *.pyc
 .env

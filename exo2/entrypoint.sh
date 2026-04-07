@@ -3,7 +3,7 @@ set -eu
 
 python manage.py migrate --noinput
 
-# Seed demo products if database is empty
+# Si la base est vide, on ajoute 15 produits de démo
 python manage.py shell -c "from billing.models import Product; raise SystemExit(0 if Product.objects.exists() else 1)" \
   || python manage.py seed_products --count 15
 

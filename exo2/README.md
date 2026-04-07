@@ -18,7 +18,7 @@ python manage.py runserver
 
 Puis ouvrir `http://127.0.0.1:8000/`.
 
-### Option B — avec Docker (recommandé pour le recruteur)
+### Option B — avec Docker
 
 Depuis le dossier `exo2/` :
 
@@ -28,9 +28,28 @@ docker compose up --build
 
 Puis ouvrir `http://127.0.0.1:8000/`.
 
-Au démarrage, le conteneur :
+Au premier lancement (si la base est vide) :
 - applique automatiquement les migrations
-- injecte **15 produits** si la base est vide (commande `seed_products`)
+- ajoute **15 produits** via `seed_products`
+
+## Scénarios de test (rapide)
+
+### Produits
+- Ouvrir `/` : liste paginée
+- Créer un produit : `/products/new/`
+- Modifier un produit : `/products/<id>/edit/`
+- Supprimer un produit : `/products/<id>/delete/`
+- Pagination : créer **11** produits et vérifier qu’un lien “Suivant” apparaît
+
+### Factures
+- Créer une facture : `/invoices/new/`
+  - cas normal : 1 à N lignes (produit + quantité)
+  - erreurs : aucune ligne / doublon produit / ligne incomplète
+- Liste des factures : `/invoices/` (pagination si > 10)
+- Détail facture : `/invoices/<id>/`
+  - lignes (produit, prix, quantité, sous-total)
+  - **nombre total de produits**
+  - **total à payer**
 
 ## Produits (CRUD + pagination)
 
@@ -70,3 +89,4 @@ La page détail facture affiche aussi :
 ```bash
 python manage.py seed_products
 ```
+

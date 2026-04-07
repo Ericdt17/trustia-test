@@ -11,7 +11,7 @@ from billing.models import Product
 
 
 class Command(BaseCommand):
-    help = "Seed the database with demo products."
+    help = "Ajoute des produits de démo en base."
 
     def add_arguments(self, parser):
         parser.add_argument("--count", type=int, default=15, help="Number of products to create.")
