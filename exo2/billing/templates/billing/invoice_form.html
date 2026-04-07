@@ -20,9 +20,10 @@
       <tr>
         <th>Produit</th>
         <th>Quantité</th>
+        <th></th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="invoice-items-body">
       {% for form in formset %}
       <tr>
         <td>
@@ -34,14 +35,60 @@
           {{ form.quantity.errors }}
           {{ form.quantity }}
         </td>
+        <td>
+          <button type="button" class="remove-line">Supprimer</button>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 
   <p>
+    <button type="button" id="add-line">Ajouter une ligne</button>
     <button type="submit">Créer la facture</button>
     <a href="{% url 'billing:invoice_list' %}">Annuler</a>
   </p>
 </form>
+
+<template id="empty-form-row">
+  <tr>
+    <td>{{ formset.empty_form.product }}</td>
+    <td>{{ formset.empty_form.quantity }}</td>
+    <td><button type="button" class="remove-line">Supprimer</button></td>
+  </tr>
+</template>
+
+<script>
+  (function () {
+    const addBtn = document.getElementById("add-line");
+    const tbody = document.getElementById("invoice-items-body");
+    const totalFormsInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
+    const tpl = document.getElementById("empty-form-row");
+
+    if (!addBtn || !tbody || !totalFormsInput || !tpl) return;
+
+    tbody.addEventListener("click", function (e) {
+      const btn = e.target.closest(".remove-line");
+      if (!btn) return;
+
+      const row = btn.closest("tr");
+      if (!row) return;
+
+      // To keep Django formset indices stable, we clear values instead of
+      // re-indexing or changing TOTAL_FORMS.
+      row.querySelectorAll("select, input").forEach((el) => {
+        if (el.tagName === "SELECT") el.selectedIndex = 0;
+        else el.value = "";
+      });
+      row.style.display = "none";
+    });
+
+    addBtn.addEventListener("click", function () {
+      const formIndex = parseInt(totalFormsInput.value, 10);
+      const html = tpl.innerHTML.replaceAll("__prefix__", String(formIndex));
+      tbody.insertAdjacentHTML("beforeend", html);
+      totalFormsInput.value = String(formIndex + 1);
+    });
+  })();
+</script>
 {% endblock %}
