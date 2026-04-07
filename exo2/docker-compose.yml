@@ -1,0 +1,15 @@
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: exo2/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_PATH=/data/db.sqlite3
+    volumes:
+      - db:/data
+
+volumes:
+  db:
+

@@ -2,6 +2,8 @@
 
 ## Lancer le projet
 
+### Option A — en local (venv)
+
 Depuis la racine du repo :
 
 ```bash
@@ -15,6 +17,20 @@ python manage.py runserver
 ```
 
 Puis ouvrir `http://127.0.0.1:8000/`.
+
+### Option B — avec Docker (recommandé pour le recruteur)
+
+Depuis le dossier `exo2/` :
+
+```bash
+docker compose up --build
+```
+
+Puis ouvrir `http://127.0.0.1:8000/`.
+
+Au démarrage, le conteneur :
+- applique automatiquement les migrations
+- injecte **50 produits** si la base est vide (commande `seed_products`)
 
 ## Produits (CRUD + pagination)
 
@@ -37,7 +53,9 @@ Champs : **nom**, **prix** (strictement positif), **date de péremption**.
 
 Règles : au moins une ligne ; pas deux fois le même produit sur une même facture.
 
-Les **totaux agrégés** (somme des quantités, montant total à payer) peuvent être ajoutés dans une étape suivante.
+La page détail facture affiche aussi :
+- le **nombre total de produits** (somme des quantités)
+- le **total à payer** (somme `prix × quantité`)
 
 ## Modèles (base de données)
 
@@ -45,6 +63,10 @@ Les **totaux agrégés** (somme des quantités, montant total à payer) peuvent 
 - `Invoice`
 - `InvoiceItem`: lien Facture ↔ Produit + `quantity`
 
-## À implémenter ensuite
+## Données de démo
 
-- Page détail facture : **total quantités** et **total à payer** (agrégats)
+- Injecter 50 produits (local) :
+
+```bash
+python manage.py seed_products --count 50
+```
