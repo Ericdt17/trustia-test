@@ -30,7 +30,7 @@ Puis ouvrir `http://127.0.0.1:8000/`.
 
 Au démarrage, le conteneur :
 - applique automatiquement les migrations
-- injecte **50 produits** si la base est vide (commande `seed_products`)
+- injecte **15 produits** si la base est vide (commande `seed_products`)
 
 ## Produits (CRUD + pagination)
 
@@ -65,8 +65,8 @@ La page détail facture affiche aussi :
 
 ## Données de démo
 
-- Injecter 50 produits (local) :
+- Injecter 15 produits (local) :
 
 ```bash
-python manage.py seed_products --count 50
+python manage.py seed_products
 ```
