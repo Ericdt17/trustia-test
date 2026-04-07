@@ -1,4 +1,5 @@
 {% extends "billing/base.html" %}
+{% load humanize %}
 {% block title %}Facture #{{ invoice.pk }}{% endblock %}
 {% block content %}
 <h1>Facture #{{ invoice.pk }}</h1>
@@ -12,19 +13,23 @@
       <th>Produit</th>
       <th>Prix unitaire</th>
       <th>Quantité</th>
+      <th>Sous-total</th>
     </tr>
   </thead>
   <tbody>
     {% for item in items %}
     <tr>
       <td>{{ item.product.name }}</td>
-      <td>{{ item.product.price }} €</td>
+      <td>{{ item.product.price|floatformat:2|intcomma }} €</td>
       <td>{{ item.quantity }}</td>
+      <td>{{ item.line_total|floatformat:2|intcomma }} €</td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
-<p><em>Les totaux (quantité globale, montant à payer) seront ajoutés dans une étape suivante.</em></p>
+<h2>Totaux</h2>
+<p><strong>Nombre total de produits :</strong> {{ total_products }}</p>
+<p><strong>Total à payer :</strong> {{ total_to_pay|floatformat:2|intcomma }} €</p>
 {% else %}
 <p>Aucune ligne sur cette facture.</p>
 {% endif %}

@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import DecimalField, ExpressionWrapper, F, Sum
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
@@ -69,5 +70,14 @@ class InvoiceDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx["items"] = self.object.items.select_related("product")
+        items_qs = self.object.items.select_related("product").annotate(
+            line_total=ExpressionWrapper(
+                F("quantity") * F("product__price"),
+                output_field=DecimalField(max_digits=12, decimal_places=2),
+            )
+        )
+        ctx["items"] = items_qs
+
+        ctx["total_products"] = items_qs.aggregate(total=Sum("quantity"))["total"] or 0
+        ctx["total_to_pay"] = items_qs.aggregate(total=Sum("line_total"))["total"] or 0
         return ctx
